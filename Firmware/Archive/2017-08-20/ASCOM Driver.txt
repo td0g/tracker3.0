@@ -1,0 +1,324 @@
+ASCOM Driver Development
+
+
+
+
+###############   Requisites   ##################
+
+Visual Studio
+VIsual Micro
+ASCOM
+ASCOM Platform Developer COmponents		http://ascom-standards.org/Downloads/PlatDevComponents.htm
+
+Guide: https://www.youtube.com/watch?v=XVlrDyIBd5I&t=289s
+
+
+
+
+###############   Visual Studio Driver Development   ##################
+
+Visual Studio --> New --> Project --> Visual C# --> ASCOM Device Driver --> Telescope
+
+Complete all the TODO's
+
+13:29
+add to header
+	Private objSerial As ASCOM.Utilities.Serial
+add to Public Property Connected():
+	If (value) Then
+		Dim comPort as String = My.Settings.CommPort
+		objSerial = New ASCOM.Utilities.Serial
+		objSerial.Port = 3	'Set!
+		objSerial.Speed = 57600	'Set!
+		objSerial.Connected = True
+
+		
+		
+		
+###############   Install Inno Setup   ##################
+
+http://www.jrsoftware.org/download.php/is.exe
+
+Ran into problems with most recent version of Inno --> Use 5.5.3 from http://files.jrsoftware.org/is/5/
+
+
+###############     Driver      ############################
+
+
+Properties
+
+Implement		Name										Description							
+2 (German Eq)	Public property	AlignmentMode				The alignment mode of the mount.			
+				Public property	Altitude					The Altitude above the local horizon of the telescope's current position (degrees, positive up)
+				Public property	ApertureArea				The area of the telescope's aperture, taking into account any obstructions (square meters)
+				Public property	ApertureDiameter			The telescope's effective aperture diameter (meters)
+Yes				Public property	AtHome						True if the telescope is stopped in the Home position. Set only following a FindHome() operation, and reset with any slew operation. This property must be False if the telescope does not support homing.
+Yes				Public property	AtPark						True if the telescope has been put into the parked state by the seee Park method. Set False by calling the Unpark() method.
+				Public property	Azimuth						The azimuth at the local horizon of the telescope's current position (degrees, North-referenced, positive East/clockwise).
+True			Public property	CanFindHome					True if this telescope is capable of programmed finding its home position (FindHome method).
+True			Public property	CanPark						True if this telescope is capable of programmed parking (Park method)
+True			Public property	CanPulseGuide				True if this telescope is capable of software-pulsed guiding (via the PulseGuide(GuideDirections, Int32) method)
+True			Public property	CanSetDeclinationRate		True if the DeclinationRate property can be changed to provide offset tracking in the declination axis.
+True			Public property	CanSetGuideRates			True if the guide rate properties used for PulseGuide(GuideDirections, Int32) can ba adjusted.
+True			Public property	CanSetPark					True if this telescope is capable of programmed setting of its park position (SetPark method)
+False			Public property	CanSetPierSide				True if the SideOfPier property can be set, meaning that the mount can be forced to flip.
+True			Public property	CanSetRightAscensionRate	True if the RightAscensionRate property can be changed to provide offset tracking in the right ascension axis.
+True			Public property	CanSetTracking				True if the Tracking property can be changed, turning telescope sidereal tracking on and off.
+True			Public property	CanSlew						True if this telescope is capable of programmed slewing (synchronous or asynchronous) to equatorial coordinates
+False			Public property	CanSlewAltAz				True if this telescope is capable of programmed slewing (synchronous or asynchronous) to local horizontal coordinates
+False			Public property	CanSlewAltAzAsync			True if this telescope is capable of programmed asynchronous slewing to local horizontal coordinates
+False			Public property	CanSlewAsync				True if this telescope is capable of programmed asynchronous slewing to equatorial coordinates.
+True			Public property	CanSync						True if this telescope is capable of programmed synching to equatorial coordinates.
+False			Public property	CanSyncAltAz				True if this telescope is capable of programmed synching to local horizontal coordinates
+True			Public property	CanUnpark					True if this telescope is capable of programmed unparking (Unpark method).
+Yes				Public property	Connected					Set True to connect to the device hardware. Set False to disconnect from the device hardware. You can also read the property to check whether it is connected. This reports the current hardware state.					(Inherited from AscomDriver.)
+Yes				Public property	Declination					The declination (degrees) of the telescope's current equatorial coordinates, in the coordinate system given by the EquatorialSystem property. Reading the property will raise an error if the value is unavailable.
+Yes				Public property	DeclinationRate				The declination tracking rate (arcseconds per SI second, default = 0.0)
+Yes				Public property	Description					Returns a description of the device, such as manufacturer and modelnumber. Any ASCII characters may be used.																												(Inherited from AscomDriver.)
+False			Public property	DoesRefraction				True if the telescope or driver applies atmospheric refraction to coordinates.
+Yes				Public property	DriverInfo					Descriptive and version information about this ASCOM driver.				(Inherited from AscomDriver.)
+Yes				Public property	DriverVersion				A string containing only the major and minor version of the driver.			(Inherited from AscomDriver.)
+Yes				Public property	EquatorialSystem			Equatorial coordinate system used by this telescope.
+0				Public property	FocalLength					The telescope's focal length, meters
+Yes				Public property	GuideRateDeclination		The current Declination movement rate offset for telescope guiding (degrees/sec)
+Yes				Public property	GuideRateRightAscension		The current Right Ascension movement rate offset for telescope guiding (degrees/sec)
+Yes				Public property	InterfaceVersion			The interface version number that this device supports.						(Inherited from AscomDriver.)
+Yes				Public property	IsPulseGuiding				True if a PulseGuide(GuideDirections, Int32) command is in progress, False otherwise
+Yes				Public property	Name						The short name of the driver, for display purposes							(Inherited from AscomDriver.)
+Yes				Public property	RightAscension				The right ascension (hours) of the telescope's current equatorial coordinates, in the coordinate system given by the EquatorialSystem property
+Yes				Public property	RightAscensionRate			The right ascension tracking rate offset from sidereal (seconds per sidereal second, default = 0.0)
+				Public property	SideOfPier					Indicates the pointing state of the mount.
+Yes				Public property	SiderealTime				The local apparent sidereal time from the telescope's internal clock (hours, sidereal)
+				Public property	SiteElevation				The elevation above mean sea level (meters) of the site at which the telescope is located
+				Public property	SiteLatitude				The geodetic(map) latitude (degrees, positive North, WGS84) of the site at which the telescope is located.
+				Public property	SiteLongitude				The longitude (degrees, positive East, WGS84) of the site at which the telescope is located.
+Yes				Public property	Slewing						True if telescope is currently moving in response to one of the Slew methods or the MoveAxis(TelescopeAxes, Double) method, False at all other times.
+Yes				Public property	SlewSettleTime				Specifies a post-slew settling time (sec.).
+				Public property	SupportedActions			Returns the list of action names supported by this driver.					(Inherited from AscomDriver.)
+Yes				Public property	TargetDeclination			The declination (degrees, positive North) for the target of an equatorial slew or sync operation
+Yes				Public property	TargetRightAscension		The right ascension (hours) for the target of an equatorial slew or sync operation
+Yes				Public property	Tracking					The state of the telescope's sidereal tracking drive.
+Yes				Public property	TrackingRate				The current tracking rate of the telescope's sidereal drive
+Yes				Public property	TrackingRates				Returns a collection of supported DriveRates values that describe the permissible values of the TrackingRate property for this telescope type.
+Yes				Public property	UTCDate						The UTC date/time of the telescope's internal clock
+				
+				
+				
+Methods
+
+Priority		Method										Comment
+1				Public method	AbortSlew					Stops a slew in progress.
+				Public method  	Action						Invokes the specified device-specific action.		(Inherited from AscomDriver.)
+2				Public method	AxisRates					A collection of rates at which the telescope may be moved about the specified axis by the MoveAxis(TelescopeAxes, Double) method.
+1				Public method	CanMoveAxis					Shows whether the telescope can be controlled about the specified axis via the MoveAxis() method.
+2				Public method  	Choose						The Choose() method returns the DriverID of the selected driver. Choose() allows you to optionally pass the DriverID of a "current" driver (you probably save this in the registry), and the corresponding telescope type is pre-selected in the Chooser's list. In this case, the OK button starts out enabled (lit-up); the assumption is that the pre-selected driver has already been configured.
+2				Public method	CommandBlind				Transmits an arbitrary string to the device and does not wait for a response. Optionally, protocol framing characters may be added to the string before transmission.			(Inherited from AscomDriver.)
+2				Public method	CommandBool					Transmits an arbitrary string to the device and waits for a boolean response. Optionally, protocol framing characters may be added to the string before transmission.			(Inherited from AscomDriver.)	
+2				Public method	CommandString				Transmits an arbitrary string to the device and waits for a string response. Optionally, protocol framing characters may be added to the string before transmission.			(Inherited from AscomDriver.)
+				Public method	DestinationSideOfPier		Predict side of pier for German equatorial mounts
+				Public method	Dispose						Releases the unmanaged late bound COM object				(Inherited from AscomDriver.)
+1				Public method	FindHome					Locates the telescope's "home" position (synchronous)
+1				Public method	MoveAxis					Move the telescope in one axis at the given rate.
+1				Public method	Park						Move the telescope to its park position, stop all motion (or restrict to a small safe range), and set AtPark to True.
+1				Public method	PulseGuide					Moves the scope in the given direction for the given interval or time at the rate given by the corresponding guide rate property
+1				Public method	SetPark						Sets the telescope Park position to the current telescope position.
+				Public method	SetupDialog					Launches a configuration dialog box for the driver. The call will not return until the user clicks OK or cancel manually.								(Inherited from AscomDriver.)
+				Public method	SlewToAltAz					Move the telescope to the given local horizontal coordinates, return when slew is complete
+				Public method	SlewToAltAzAsync			This Method must be implemented if CanSlewAltAzAsync returns True.
+1				Public method	SlewToCoordinates			Move the telescope to the given equatorial coordinates, return when slew is complete
+1				Public method	SlewToCoordinatesAsync		Move the telescope to the given equatorial coordinates, return immediately after starting the slew.
+1				Public method	SlewToTarget				Move the telescope to the TargetRightAscension and TargetDeclination coordinates, return when slew complete.
+1				Public method	SlewToTargetAsync			Move the telescope to the TargetRightAscension and TargetDeclination coordinates, returns immediately after starting the slew.
+				Public method	SyncToAltAz					Matches the scope's local horizontal coordinates to the given local horizontal coordinates.
+1				Public method	SyncToCoordinates			Matches the scope's equatorial coordinates to the given equatorial coordinates.
+1				Public method	SyncToTarget				Matches the scope's equatorial coordinates to the given equatorial coordinates.
+1				Public method	Unpark						Takes telescope out of the Parked state.
+
+
+
+######################   Communication Protocol   ##############################
+
+End each command/query with "/"
+
+Current coordinates
+	cr		Set current RA coordinate				(arcsecs)
+	cd		Set current DEC coordinate				(arcsecs from south pole, Celestial equator = 90*3600)
+	crq		Get current RA coordinate				(arcsecs)
+	cdq		Get current DEC Coordinate				(arcsecs from south pole, Celestial equator = 90*3600)
+	ct		Set target coordinates as current
+
+Target coordinates
+	tr		Set target RA coordinate
+	td		Set target DEC coordinate
+
+Home
+	hh		Go home
+	hq		Is home?		("y" / "n")
+
+Parking (default position = home)
+	pp		Park
+	up		Unpark
+	pq		Is parked?		("y" / "n")
+	ps		Set park position to current position
+
+Slewing
+	sr		Slew to RA coordinate	(arcseconds from current)
+	sd		Slew to DEC coordinate	(arcseconds from south)
+	st		Slew to target coordinates
+	sq		Is Slewing?		("y" / "n")
+	ss		Stop slew
+	sw		Slew settle (wait) time (s)
+	swq		Get slew settle (wait) time (s)
+	
+Moving
+	mX		Move north/south/east/west
+	md		Stop Dec move
+	mr		Stop RA move
+
+Tracking
+	gt		Tracking on
+	gf		Tracking off
+	gq		Is tracking?		("y" / "n")
+	rr		Right Ascension Rate (default = 1 which is 100%)
+	rd		DEC rate (default = 1 which is 100%)								1/1000000 arcsec/sec			
+	
+Pulse Guiding
+	pgX		Pulse Guide e/w/n/s, time in ms
+	pgq		Is pulse guiding?		("y" / "n")
+	pgsr	Set RA pulse guide rate (500 default = 5.00% sidereal rate)
+	pgsd	Set DEC pulse guide rate
+	pgqX	Get pulse guide rate (r / d, deg/sec)
+	
+	
+	
+Notes:
+	1 second RA = 0.00027777777778			Assume hrs?
+	1 second DEC = 0.00027777777778			Assume deg?
+	
+	
+	
+######################   Host Driver   ##############################
+
+
+In the local server's project properties, Application tab, change BOTH the AssemblyName and the default assembly name to ASCOM.xxx (e.g., ASCOM.SuperScope). This may be done by default now. 
+		DONE
+		
+Add one or more driver skeleton projects using the in-proc templates. You may use either the C# or VB templates. Project name is not important (not used in ProgID) choose something like TelescopeDriver. You will be changing the substituted project name in these projects below. If you ensure that the LocalServer and all the driver projects have the same NameSpace e.g. ASCOM.SuperScope the renaming in section 6a will not be required. 
+		DONE
+		
+Develop and debug these driver projects as normal in-process assemblies. This will be much simpler because the driver and test code can be debugged in the same process. 
+		DONE
+		
+Build the LocalServer. 
+		Done - Release
+
+Set a reference to the local server project in each of the driver skeleton projects. 
+		DONE - C:\Users\Tyler\Documents\Visual Studio 2015\Projects\DeE_Host\DeE_Host\bin\Debug\ASCOM.DeE_Host.Server.EXE
+		
+In each skeleton driver project:
+				Do a Find In Files for the project name of the skeleton driver (e.g., TelescopeDriver) and change it to match the project name of your local server (e.g. SuperScope). You don't have to do this in the ReadMe.html file. Everywhere else, however, is IMPORTANT. This sets the correct namespace, progID, etc. If you're a bit more brave, you can use Replace in Files. This may not be needed if the correct namespace and naming conventions have been followed when the drivers and local server were generated. 
+						DONE - 2 instances found?
+						
+				In project properties, Application tab, change the assembly name to ASCOM.localserverprojectname.drivertype, (e.g., ASCOM.SuperScope.Telescope). 
+						DONE - Assembly name AND root namespace
+				
+				In project properties, Application tab, click Assembly Information... Assure that Make assembly COM visible is on (it should already be on). 
+						DONE
+
+				Edit the Product Name to be the "friendly name" of your driver as will be shown in the Chooser. Not used now, use the ServedClassName attribute instead. 
+						???
+
+				In project properties, Build tab, turn off Register for COM Interop.
+						DONE
+
+				Modify the driver class declaration to inherit from ReferenceCountedObjectBase. Examples:
+				C#: 
+
+							  public class Telescope :
+							  ReferenceCountedObjectBase,
+							  ITelescope
+							
+				VB: 
+
+							  Public Class Telescope
+							  '==================================
+							  Inherits ReferenceCountedObjectBase
+							  Implements ITelescope
+							  '==================================
+							  
+							DONE - Inherits ReferenceCountedObjectBase
+							
+				In driver.cs/driver.vb, remove the entire ASCOM Registration region 
+							COMMENTED OUT
+
+				In driver.cs/driver.vb, remove the private strings for driver ID and driver description. They may be needed internally, and if so should be set from the associated attributes, ServedClassName for the description and ProgId for the driver Id. 
+						COMMENTED OUT
+						Gave temporary strings
+						
+				
+				Modify the class attributes by adding the ServedClassName and ProgID attributes. The ServedClassName attribute must be the friendly name shown as the device name in the Chooser and the ProgId the progid of the driver e.g. ASCOM.SuperScope.Telescope. The class header should look like this: 
+
+				C#:  
+								[Guid("0AE8B38D-10A1-4A8D-A5B7-1B050F74B48B")]  // set by the template
+								[ProgId("ASCOM.SuperScope.Telescope")]
+								[ServedClassName ("Super Scope Telescope")]
+								[ClassInterface(ClassInterfaceType.None)]
+								public class Telescope : ReferenceCountedObjectBase , ITelescope
+
+				VB:
+							<Guid(“0AE8B38D-10A1-4A8D-A5B7-1B050F74B48B”)>
+							<ProgId(“ASCOM.SuperScope.Telescope”)>
+							<ServedClassName(“Super Scope Telescope”)>
+							Public Class Telescope
+							'==================================
+							Inherits ReferenceCountedObjectBase
+							Implements ITelescope
+							'==================================
+					DONE
+						
+				Add the following line to the driver constructor, this sets the driver ID using the ProgId Attribute: 
+
+				C#
+							s_csDriverID = Marshal.GenerateProgIdForType(this.GetType());
+						  
+				VB:
+							s_csDriverID = Marshal.GenerateProgIdForType(Me.GetType())
+							
+					DONE in New():      Dim driverID As String = Marshal.GenerateProgIdForType(Me.GetType())
+
+Unless you're writing a single-driver hub, you will have two or more driver types (e.g. Telescope and Focuser) and thus two or more driver assembly projects added. Presumably, these drivers need to share some resources (e.g. a single COM port via Helper.Serial). Put shared resources into the SharedResources class provided . There are some examples that should give a clue, modify and delete these as required. 
+
+A shared serial port is already provided (see SharedResources.cs) as SharedResources.SharedSerial and it is an ASCOM Helper Serial object. You may wish to define additional shared resources in static member variables with public static accessor properties as is already done for SharedSerial. Unfortunately, if you are a Visual Basic programmer, you will have to make these additions in C#. 
+
+If you are writing a hub and don't need the serial port, in SharedResources.cs you can remove the public static SharedSerial property, the m_SharedSerial member in the private data region, and the line in main that initializes it. If you don't need any other shared resources for your hub, then you can remove the SharedResources.cs file completely. 
+
+If you modified the LocalServer, build it again now. This will refresh the stuff that's visible to the drivers. 
+
+Build the driver skeletons to verify that you got all of the namespace and other variable changes. 
+
+The local server dynamically loads the driver assemblies from the same folder as the local server executable. 
+
+During development, you'll need to add a post-build task to each of your driver assembly projects which puts a copy of the driver assembly into the local server executable folder. Here is an example: 
+
+    copy "$(TargetPath)" "$(SolutionDir)\SuperScope\$(OutDir)\$(TargetFileName)"
+This assumes that the server project is called “SuperScope”, and handles using the debug or release build.
+Note the quotes for possible path elements with spaces in them. An alternative is to set the build path to the required destination instead of the default path. 
+
+Make sure the drivers are registered through the local server by running it with the /register parameter, see below for details. 
+
+IMPORTANT: With a local server based driver (or hub) it is possible for multiple clients to control the device(s). It is up to you to safeguard against abuse. The sort of thing that's needed is to have a counter of the number of connections to a device, the connection is only fully broken when the number of connections is zero. You may also need code to prevent several drivers from talking to the hardware at the same time, the lock pattern is useful for that. 
+
+You may want to add controls and/or status information to the main form frmMain of the local server. Please resist the temptation to turn the local server's main form into a graphical device control panel. Instead, make a separate application that uses the served driver(s). A driver is not a program! 
+
+
+
+
+
+
+2017-08-07
+
+	Stole a bunch of code from QA Power Driver
+	New COM Methods: sharedResources.SendMessage and sharedResources.SendMessageBlind
+	Need to add to the skeleton project
+	
+	-register
