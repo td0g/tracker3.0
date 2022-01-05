@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeE", "DeE\DeE.csproj", "{3689A2CB-94C5-4012-A5CF-7E7D1DD27143}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelescopeDriver", "TelescopeDriver\TelescopeDriver.csproj", "{64308775-BD4A-469C-BCAB-3ED830B811AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FocuserDriver", "FocuserDriver\FocuserDriver.csproj", "{7F95FA78-98D7-4F17-A015-EE1500CDE895}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3689A2CB-94C5-4012-A5CF-7E7D1DD27143}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3689A2CB-94C5-4012-A5CF-7E7D1DD27143}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3689A2CB-94C5-4012-A5CF-7E7D1DD27143}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3689A2CB-94C5-4012-A5CF-7E7D1DD27143}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64308775-BD4A-469C-BCAB-3ED830B811AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64308775-BD4A-469C-BCAB-3ED830B811AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64308775-BD4A-469C-BCAB-3ED830B811AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64308775-BD4A-469C-BCAB-3ED830B811AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F95FA78-98D7-4F17-A015-EE1500CDE895}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F95FA78-98D7-4F17-A015-EE1500CDE895}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F95FA78-98D7-4F17-A015-EE1500CDE895}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F95FA78-98D7-4F17-A015-EE1500CDE895}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
